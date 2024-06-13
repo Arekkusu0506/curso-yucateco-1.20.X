@@ -1,5 +1,9 @@
 package net.aborigen.yucatan;
 import com.mojang.logging.LogUtils;
+import net.aborigen.yucatan.item.ModCreativeModeTabs;
+import net.aborigen.yucatan.item.ModItems;
+import net.aborigen.yucatan.block.ModBlocks;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -27,6 +31,10 @@ public class YucatanMod
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModCreativeModeTabs.register(modEventBus);
+
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -45,7 +53,19 @@ public class YucatanMod
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.ALEXANDRITE);
+            event.accept(ModItems.RAW_ALEXANDRITE);
+        }
 
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(ModBlocks.ALEXANDRITE_BLOCK);
+            event.accept(ModBlocks.RAW_ALEXANDRITE_BLOCK);
+            event.accept(ModBlocks.ALEXANDRITE_ORE);
+            event.accept(ModBlocks.DEEPSLATE_ALEXANDRITE_ORE);
+            event.accept(ModBlocks.END_STONE_ALEXANDRITE_ORE);
+            event.accept(ModBlocks.NETHER_ALEXANDRITE_ORE);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
